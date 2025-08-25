@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: #333;
+            background-image: url('https://media.discordapp.net/attachments/1075818158297980969/1409554795403939951/nds.jpeg?ex=68adcdb3&is=68ac7c33&hm=7c224fe005a2d7a87e2a966bd5e1ad3b9ef63a6c51689831f3312b5c27f3236b&=&format=webp&width=1031&height=581');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content {
+            text-align: right;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        p {
+            font-size: 1.2em;
+            background-color: rgba(255, 255, 255, 1);
+            padding: 10px;
+            margin: 5px 0;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        a:hover {
+            color: #003366;
+        }
+        .hashtag {
+            font-size: 1.5em;
+            color: #e02fa8;
+            margin-top: 0;
+        }
+        .affiliate-pixel {
+            display: none;
+        }
+        #loading {
+            display: none;
+            font-size: 1em;
+            color: #0066cc;
+            margin-top: 10px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .footer p {
+            font-size: 0.9em;
+            margin: 0 10px 0 0;
+            background-color: transparent;
+        }
+        .footer img {
+            width: 50px;
+            height: auto;
+            margin-left: 10px;
+        }
+        .language-selector {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .language-selector select {
+            padding: 5px;
+            font-size: 1em;
+        }
+    </style>
+    <script>
+        // Objeto de traducciones
+        const translations = {
+            es: {
+                title: "Enlace Manual",
+                loading: "Cargando enlace...",
+                linkText: "Haz click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aquí</a> para acceder a los archivos.",
+                hashtag: "#TeAmoKelonio",
+                footer: "¡Visítanos en <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> para cualquier duda!",
+                processing: "Procesando...",
+                selectLanguage: "Seleccionar idioma"
+            },
+            en: {
+                title: "Manual Link",
+                loading: "Loading link...",
+                linkText: "Click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">here</a> to access the files.",
+                hashtag: "#TeAmoKelonio",
+                footer: "Visit us on <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> for any questions!",
+                processing: "Processing...",
+                selectLanguage: "Select language"
+            },
+            fr: {
+                title: "Lien Manuel",
+                loading: "Chargement du lien...",
+                linkText: "Cliquez <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ici</a> pour accéder aux fichiers.",
+                hashtag: "#TeAmoKelonio",
+                footer: "Rejoignez-nous sur <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> pour toute question !",
+                processing: "En cours...",
+                selectLanguage: "Sélectionner la langue"
+            },
+            it: {
+                title: "Link Manuale",
+                loading: "Caricamento del link...",
+                linkText: "Clicca <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">qui</a> per accedere ai file.",
+                hashtag: "#TeAmoKelonio",
+                footer: "Visita il nostro <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> per qualsiasi domanda!",
+                processing: "Elaborazione...",
+                selectLanguage: "Seleziona lingua"
+            },
+            pt: {
+                title: "Link Manual",
+                loading: "Carregando link...",
+                linkText: "Clique <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aqui</a> para acessar os arquivos.",
+                hashtag: "#TeAmoKelonio",
+                footer: "Visite-nos no <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> para qualquer dúvida!",
+                processing: "Processando...",
+                selectLanguage: "Selecionar idioma"
+            },
+            de: {
+                title: "Manueller Link",
+                loading: "Link wird geladen...",
+                linkText: "Klicken Sie <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">hier</a>, um auf die Dateien zuzugreifen.",
+                hashtag: "#TeAmoKelonio",
+                footer: "Besuchen Sie uns auf <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> bei Fragen!",
+                processing: "Verarbeitung...",
+                selectLanguage: "Sprache auswählen"
+            },
+            ja: {
+                title: "マニュアルリンク",
+                loading: "リンクを読み込んでいます...",
+                linkText: "<a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ここ</a>をクリックしてファイルにアクセスしてください。",
+                hashtag: "#TeAmoKelonio",
+                footer: "ご質問がある場合は、<a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a>でご連絡ください！",
+                processing: "処理中...",
+                selectLanguage: "言語を選択"
+            }
+        };
+
+        // Detectar idioma por IP con fallback al idioma del navegador y luego a inglés
+        async function getUserLanguage() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const lang = data.languages.split(',')[0].split('-')[0]; // Obtener idioma base (ej: 'en' de 'en-US')
+                return translations[lang] ? lang : 'en'; // Fallback a inglés
+            } catch (error) {
+                console.error('Error al detectar idioma por IP:', error);
+                // Fallback al idioma del navegador
+                const lang = navigator.language || navigator.userLanguage;
+                const primaryLang = lang.split('-')[0];
+                return translations[primaryLang] ? primaryLang : 'en'; // Fallback a inglés
+            }
+        }
+
+        function mostrarEnlace(lang) {
+            document.documentElement.lang = lang; // Actualizar atributo lang
+            document.title = translations[lang].title; // Actualizar título de la página
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const formId = urlParams.get('form') || '1';
+
+            const mediaFireLinks = {
+                '1': 'https://www.mediafire.com/folder/56xpgovnot6tr/EliminarHack',
+                '2': 'https://www.mediafire.com/folder/koab9l7nchp1h/MemoryPit',
+                '3': 'https://www.mediafire.com/folder/384b15bodytmy/NAND',
+                '4': 'https://www.mediafire.com/folder/8u4bkclvs1076/Stylehax',
+                '5': 'https://www.mediafire.com/folder/2vq288dapxepd/Online',
+                '100': ''
+            };
+
+            const mediaFireUrl = mediaFireLinks[formId] || mediaFireLinks['1'];
+
+            // Reemplazar {url} en el texto del enlace
+            const linkText = translations[lang].linkText.replace('{url}', mediaFireUrl);
+
+            document.body.innerHTML = `
+                <div class="language-selector">
+                    <select id="language-select" onchange="mostrarEnlace(this.value)">
+                        <option value="es" ${lang === 'es' ? 'selected' : ''}>Español</option>
+                        <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
+                        <option value="fr" ${lang === 'fr' ? 'selected' : ''}>Français</option>
+                        <option value="it" ${lang === 'it' ? 'selected' : ''}>Italiano</option>
+                        <option value="pt" ${lang === 'pt' ? 'selected' : ''}>Português</option>
+                        <option value="de" ${lang === 'de' ? 'selected' : ''}>Deutsch</option>
+                        <option value="ja" ${lang === 'ja' ? 'selected' : ''}>日本語</option>
+                    </select>
+                </div>
+                <div class="content">
+                    <p></p>
+                    <p>${linkText}</p>
+                    <p class="hashtag">${translations[lang].hashtag}</p>
+                    <div id="affiliate-container"></div>
+                    <div id="loading">${translations[lang].processing}</div>
+                </div>
+                <div class="footer">
+                    <p>${translations[lang].footer}</p>
+                    <img src="https://media.discordapp.net/attachments/1075818158297980969/1409559599882965104/cb335995d5a636c7c895a074afe2a4738c8e2b394e0f1f404594614f8dd63e05.webp?ex=68add22c&is=68ac80ac&hm=2b865b65a1065e1d730dc5dc25cdfb8894864e32765bf405acef5ad1e89286d2&=&format=webp" alt="Discord Logo">
+                </div>
+            `;
+        }
+
+        function abrirEnlace(url) {
+            const affiliateUrl = 'https://www.amazon.es/dp/B09N32PFD8?tag=kelonio-21';
+            let attempts = 0;
+            const maxAttempts = 2;
+            const lang = document.documentElement.lang || 'en'; // Usar inglés como fallback
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading').innerText = translations[lang].processing;
+
+            function sendAffiliateRequest() {
+                const img = document.createElement('img');
+                img.src = affiliateUrl;
+                img.className = 'affiliate-pixel';
+                img.width = 1;
+                img.height = 1;
+                img.alt = '';
+                document.getElementById('affiliate-container').appendChild(img);
+                console.log(`Solicitud de afiliado (imagen) intento ${attempts + 1}`);
+
+                fetch(affiliateUrl, { method: 'GET', mode: 'no-cors' })
+                    .then(response => console.log(`Solicitud de afiliado (fetch) intento ${attempts + 1} enviada`))
+                    .catch(error => console.error(`Error en la solicitud de afiliado (fetch) intento ${attempts + 1}:`, error));
+
+                attempts++;
+                if (attempts < maxAttempts) {
+                    setTimeout(sendAffiliateRequest, 500 * attempts);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                        window.open(url, '_blank');
+                    }, 500);
+                }
+            }
+
+            sendAffiliateRequest();
+        }
+
+        window.onload = async () => {
+            const lang = await getUserLanguage();
+            document.getElementById('initial-loading').innerText = translations[lang].loading;
+            mostrarEnlace(lang);
+        };
+    </script>
+</head>
+<body>
+    <p id="initial-loading"></p>
+</body>
+</html>
