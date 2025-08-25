@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enlace Manual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #003366;
+        }
+        .hashtag {
+            font-size: 1.5em;
+            color: #ff4d4d; /* Color rojo para destacar */
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function mostrarEnlace() {
+            // Obtener el parámetro "form" de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const formId = urlParams.get('form') || '1'; // Por defecto, usa el formulario 1 si no hay parámetro
+
+            // Definir los enlaces de MediaFire según el formulario
+            const mediaFireLinks = {
+                '1': 'https://www.mediafire.com/folder/56xpgovnot6tr/EliminarHack', // ELIMINAR HACK
+                '2': 'https://www.mediafire.com/folder/koab9l7nchp1h/MemoryPit', // MEMORYPIT
+                '3': 'https://www.mediafire.com/folder/384b15bodytmy/NAND', // NAND
+                '4': 'https://www.mediafire.com/folder/8u4bkclvs1076/Stylehax', // STYLEHAX                
+                '5': 'https://www.mediafire.com/folder/2vq288dapxepd/Online',  // ONLINE
+                '100': '' // Empty
+            };
+
+            // Seleccionar el enlace de MediaFire según el formulario
+            const mediaFireUrl = mediaFireLinks[formId] || mediaFireLinks['1'];
+
+            // Hacer una solicitud HTTP al enlace de afiliado
+            const affiliateUrl = 'https://www.amazon.com/?tag=kelonio-21';
+            fetch(affiliateUrl, { method: 'GET', mode: 'no-cors' })
+                .then(response => console.log('Solicitud de afiliado enviada'))
+                .catch(error => console.error('Error en la solicitud de afiliado:', error));
+
+            // Mostrar el enlace manual, el hashtag y el mensaje de divulgación
+            document.body.innerHTML = `
+                <p></p>
+                <p>Haz clic <a href="${mediaFireUrl}" target="_blank">aquí</a> para abrir el enlace.</p>
+                <p class="hashtag">#TeAmoKelonio</p>
+                <p style="font-size: 0.9em; color: #666;">Este sitio participa en el Programa de Afiliados de Amazon.</p>
+            `;
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = mostrarEnlace;
+    </script>
+</head>
+<body>
+    <p>Cargando enlace...</p>
+</body>
+</html>
