@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enlace Manual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: #333;
+            background-image: url('https://media.discordapp.net/attachments/1075818158297980969/1409554795403939951/nds.jpeg?ex=68adcdb3&is=68ac7c33&hm=7c224fe005a2d7a87e2a966bd5e1ad3b9ef63a6c51689831f3312b5c27f3236b&=&format=webp&width=1031&height=581');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content {
+            text-align: right;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        p {
+            font-size: 1.2em;
+            background-color: rgba(255, 255, 255, 1);
+            padding: 10px;
+            margin: 5px 0;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        a:hover {
+            color: #003366;
+        }
+        .hashtag {
+            font-size: 1.5em;
+            color: #e02fa8;
+            margin-top: 0;
+        }
+        .affiliate-pixel {
+            display: none;
+        }
+        #loading {
+            display: none;
+            font-size: 1em;
+            color: #0066cc;
+            margin-top: 10px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .footer p {
+            font-size: 0.9em;
+            margin: 0 10px 0 0;
+            background-color: transparent;
+        }
+        .footer img {
+            width: 50px;
+            height: auto;
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+        function mostrarEnlace() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const formId = urlParams.get('form') || '1';
+
+            const mediaFireLinks = {
+                '1': 'https://www.mediafire.com/folder/56xpgovnot6tr/EliminarHack',
+                '2': 'https://www.mediafire.com/folder/koab9l7nchp1h/MemoryPit',
+                '3': 'https://www.mediafire.com/folder/384b15bodytmy/NAND',
+                '4': 'https://www.mediafire.com/folder/8u4bkclvs1076/Stylehax',
+                '5': 'https://www.mediafire.com/folder/2vq288dapxepd/Online',
+                '100': ''
+            };
+
+            const mediaFireUrl = mediaFireLinks[formId] || mediaFireLinks['1'];
+
+            document.body.innerHTML = `
+                <div class="content">
+                    <p></p>
+                    <p>Haz clic <a onclick="abrirEnlace('${mediaFireUrl}')" id="mediafire-link">aquí</a> para abrir el enlace.</p>
+                    <p class="hashtag">#TeAmoKelonio</p>
+                    <div id="affiliate-container"></div>
+                    <div id="loading">Procesando...</div>
+                </div>
+                <div class="footer">
+                    <p>¡Visítanos en <a href="https://discord.gg/8Fv8GDg" target="_blank">Discord</a> para cualquier duda!</p>
+                    <img src="https://media.discordapp.net/attachments/1075818158297980969/1409559599882965104/cb335995d5a636c7c895a074afe2a4738c8e2b394e0f1f404594614f8dd63e05.webp?ex=68add22c&is=68ac80ac&hm=2b865b65a1065e1d730dc5dc25cdfb8894864e32765bf405acef5ad1e89286d2&=&format=webp" alt="Discord Logo">
+                </div>
+            `;
+        }
+
+        function abrirEnlace(url) {
+            const affiliateUrl = 'https://www.amazon.es/dp/B09N32PFD8?tag=kelonio-21';
+            let attempts = 0;
+            const maxAttempts = 2;
+            document.getElementById('loading').style.display = 'block';
+
+            function sendAffiliateRequest() {
+                const img = document.createElement('img');
+                img.src = affiliateUrl;
+                img.className = 'affiliate-pixel';
+                img.width = 1;
+                img.height = 1;
+                img.alt = '';
+                document.getElementById('affiliate-container').appendChild(img);
+                console.log(`Solicitud de afiliado (imagen) intento ${attempts + 1}`);
+
+                fetch(affiliateUrl, { method: 'GET', mode: 'no-cors' })
+                    .then(response => console.log(`Solicitud de afiliado (fetch) intento ${attempts + 1} enviada`))
+                    .catch(error => console.error(`Error en la solicitud de afiliado (fetch) intento ${attempts + 1}:`, error));
+
+                attempts++;
+                if (attempts < maxAttempts) {
+                    setTimeout(sendAffiliateRequest, 500 * attempts);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                        window.open(url, '_blank');
+                    }, 500);
+                }
+            }
+
+            sendAffiliateRequest();
+        }
+
+        window.onload = mostrarEnlace;
+    </script>
+</head>
+<body>
+    <p>Cargando enlace...</p>
+</body>
+</html>
