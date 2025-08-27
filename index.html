@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Manual Link</title>
+ <style>
+ body {
+ font-family: Arial, sans-serif;
+ display: flex;
+ justify-content: flex-end;
+ align-items: flex-start;
+ height: 100vh;
+ margin: 0;
+ text-align: center;
+ color: #333;
+ background-image: url('https://media.discordapp.net/attachments/1075818158297980969/1409554795403939951/nds.jpeg?ex=68af1f33&is=68adcdb3&hm=caebdc037609067d6c3d369cb77ad1f23c55d0a4dd83aac6b9721cf87b582b79=&format=webp&width=1031&height=581');
+ background-size: cover;
+ background-position: center;
+ background-repeat: no-repeat;
+ }
+ .content {
+ text-align: right;
+ padding: 20px;
+ position: absolute;
+ top: 0;
+ right: 0;
+ }
+ p {
+ font-size: 1.2em;
+ background-color: transparent;
+ padding: 10px;
+ margin: 5px 0 0 0;
+ }
+ a {
+ color: #0066cc;
+ text-decoration: underline;
+ font-weight: bold;
+ cursor: pointer;
+ }
+ a:hover {
+ color: #003366;
+ }
+ .footer {
+ position: fixed;
+ bottom: 0;
+ right: 0;
+ left: 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 10px;
+ background-color: rgba(255, 255, 255, 0.9);
+ box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+ z-index: 1000;
+ }
+ .footer .social-buttons {
+ display: flex;
+ gap: 10px;
+ }
+ .footer .social-button {
+ display: flex;
+ align-items: center;
+ padding: 8px 15px;
+ background-color: #0066cc;
+ color: white;
+ text-decoration: none;
+ border-radius: 5px;
+ font-size: 0.9em;
+ transition: background-color 0.3s;
+ }
+ .footer .social-button:hover {
+ background-color: #003366;
+ }
+ .footer .social-button img {
+ width: 20px;
+ height: 20px;
+ margin-right: 8px;
+ }
+ .language-selector {
+ text-align: right;
+ margin-bottom: 15px;
+ margin-right: 20px;
+ }
+ .language-selector select {
+ padding: 5px;
+ font-size: 1em;
+ min-width: 150px;
+ z-index: 2000;
+ }
+ #loading {
+ display: none;
+ font-size: 1em;
+ color: #0066cc;
+ margin-top: 10px;
+ background-color: transparent;
+ }
+ </style>
+ <script>
+ // Objeto de traducciones
+ const translations = {
+ es: {
+ title: "Enlace Manual",
+ loading: "Cargando enlace...",
+ linkText: "Click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aquí</a> para acceder a los archivos.",
+ youtube: "Suscribirse en YouTube",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Apoyar en Ko-fi",
+ processing: "Procesando, por favor espera...",
+ selectLanguage: "Seleccionar idioma"
+ },
+ en: {
+ title: "Manual Link",
+ loading: "Loading link...",
+ linkText: "Click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">here</a> to access the files.",
+ youtube: "Subscribe on YouTube",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Support on Ko-fi",
+ processing: "Processing, please wait...",
+ selectLanguage: "Select language"
+ },
+ fr: {
+ title: "Lien Manuel",
+ loading: "Chargement du lien...",
+ linkText: "Cliquez <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ici</a> pour accéder aux fichiers.",
+ youtube: "S'abonner sur YouTube",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Soutenir sur Ko-fi",
+ processing: "En cours, veuillez patienter...",
+ selectLanguage: "Sélectionner la langue"
+ },
+ it: {
+ title: "Link Manuale",
+ loading: "Caricamento del link...",
+ linkText: "Clicca <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">qui</a> per accedere ai file.",
+ youtube: "Iscriviti su YouTube",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Supporta su Ko-fi",
+ processing: "Elaborazione in corso...",
+ selectLanguage: "Seleziona lingua"
+ },
+ pt: {
+ title: "Link Manual",
+ loading: "Carregando link...",
+ linkText: "Clique <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aqui</a> para acessar os archivos.",
+ youtube: "Inscrever-se no YouTube",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Apoiar no Ko-fi",
+ processing: "Processando, por favor aguarde...",
+ selectLanguage: "Selecionar idioma"
+ },
+ de: {
+ title: "Manueller Link",
+ loading: "Link wird geladen...",
+ linkText: "Klicken Sie <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">hier</a>, um auf die Dateien zuzugreifen.",
+ youtube: "Auf YouTube abonnieren",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Unterstützen auf Ko-fi",
+ processing: "Verarbeitung, bitte warten...",
+ selectLanguage: "Sprache auswählen"
+ },
+ ja: {
+ title: "マニュアルリンク",
+ loading: "リンクを読み込んでいます...",
+ linkText: "<a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ここ</a>をクリックしてファイルにアクセスしてください。",
+ youtube: "YouTubeで登録",
+ discord: "Discord",
+ twitter: "Twitter",
+ github: "GitHub",
+ kofi: "Ko-fiでサポート",
+ processing: "処理中、お待ちください...",
+ selectLanguage: "言語を選択"
+ }
+ };
+
+ function mostrar Enlace(lang = 'en') {
+ try {
+ document.documentElement.lang = lang;
+ document.title = translations[lang].title;
+
+ const urlParams = new URLSearchParams(window.location.search);
+ const formId = urlParams.get('form') || '1';
+
+ const mediaFireLinks = {
+ '1': 'https://www.mediafire.com/folder/56xpgovnot6tr/EliminarHack',
+ '2': 'https://www.mediafire.com/folder/koab9l7nchp1h/MemoryPit',
+ '3': 'https://www.mediafire.com/folder/384b15bodytmy/NAND',
+ '4': 'https://www.mediafire.com/folder/8u4bkclvs1076/Stylehax',
+ '5': 'https://www.mediafire.com/folder/2vq288dapxepd/Online',
+ '100': '' // Empty
+ };
+
+ const mediaFireUrl = mediaFireLinks[formId] || mediaFireLinks['1'];
+ const linkText = translations[lang].linkText.replace('{url}', mediaFireUrl);
+
+ document.body.innerHTML = `
+ <div class="content">
+ <div class="language-selector">
+ <select id="language-select" onchange="mostrarEnlace(this.value)">
+ <option value="es" ${lang === 'es' ? 'selected' : ''}>Español</option>
+ <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
+ <option value="fr" ${lang === 'fr' ? 'selected' : ''}>Français</option>
+ <option value="it" ${lang === 'it' ? 'selected' : ''}>Italiano</option>
+ <option value="pt" ${lang === 'pt' ? 'selected' : ''}>Português</option>
+ <option value="de" ${lang === 'de' ? 'selected' : ''}>Deutsch</option>
+ <option value="ja" ${lang === 'ja' ? 'selected' : ''}>日本語</option>
+ </select>
+ </div>
+ <p></p>
+ <p>${linkText}</p>
+ <div id="loading">${translations[lang].processing}</div>
+ </div>
+ <div class="footer">
+ <div class="social-buttons">
+ <a href="https://www.youtube.com/@Kelonio3DS" target="_blank" class="social-button">
+ <img src="https://www.youtube.com/s/desktop/4b6a0d35/img/favicon_32x32.png" alt="YouTube"> ${translations[lang].youtube}
+ </a>
+ <a href="https://discord.gg/8Fv8GDg" target="_blank" class="social-button">
+ <img src="https://discord.com/assets/1c8a54f25d101bdc607cec7228247a9a.png" alt="Discord"> ${translations[lang].discord}
+ </a>
+ <a href="https://x.com/Kelonio3DS" target="_blank" class="social-button">
+ <img src="https://abs.twimg.com/favicons/twitter.2.ico" alt="Twitter"> ${translations[lang].twitter}
+ </a>
+ <a href="https://github.com/Kelonio-hub" target="_blank" class="social-button">
+ <img src="https://github.githubassets.com/favicons/favicon-dark.png" alt="GitHub"> ${translations[lang].github}
+ </a>
+ <a href="https://ko-fi.com/lapresa" target="_blank" class="social-button">
+ <img src="https://ko-fi.com/img/Kofi_ Logo_Blue.svg" alt="Ko-fi"> ${translations[lang].kofi}
+ </a>
+ </div>
+ </div>
+ `;
+ console.log('Contenido renderizado correctamente');
+ } catch (error) {
+ console.error('Error en mostrarEnlace:', error);
+ document.body.innerHTML = `
+ <div class="content">
+ <p>Error al cargar el contenido. Por favor, intenta de nuevo.</p>
+ </div>
+ `;
+ }
+ }
+
+ function abrirEnlace(mediaFireUrl) {
+ const amazonUrl = 'https://amzn.to/4lJC3tK';
+ const lang = document.documentElement.lang || 'en';
+ try {
+ document.getElementById('loading').style.display = 'block';
+ document.getElementById('loading').innerText = translations[lang].processing;
+
+ // Abrir MediaFire en una nueva pestaña
+ console.log('Abriendo enlace en nueva pestaña:', mediaFireUrl);
+ window.open(mediaFireUrl, '_blank');
+
+ // Redirigir la ventana actual a Amazon después de un pequeño retraso
+ setTimeout(() => {
+ console.log('Redirigiendo ventana actual a Amazon:', amazonUrl);
+ document.getElementById('loading').style.display = 'none';
+ window.location.href = amazonUrl;
+ }, 100);
+ } catch (error) {
+ console.error('Error en abrirEnlace:', error);
+ document.getElementById('loading').style.display = 'none';
+ }
+ }
+
+ window.onload = () => {
+ try {
+ console.log('Iniciando carga de página');
+ mostrarEnlace('en'); // Inglés por defecto
+ } catch (error) {
+ console.error('Error en window.onload:', error);
+ document.body.innerHTML = `
+ <div class="content">
+ <p>Error al cargar la página. Por favor, intenta de nuevo.</p>
+ </div>
+ `;
+ }
+ };
+ </script>
+</head>
+<body>
+ <p id="initial-loading">Loading...</p>
+</body>
+</html>
